@@ -231,7 +231,7 @@ tPerfilRectangular_2 = 1.5/1000;
 ladoPerfilRectangular_3 = 50/1000;
 tPerfilRectangular_3 = 1.25/1000;
 
-rhoAcero = 7800;
+rhoAcero = 7800; %[KG/M3]
 
 [L1,pesoTotal_1] = volumenEstructura(coordenadasGlobales, elementosGlobales,...
                       ladoPerfilRectangular_1, tPerfilRectangular_1,...
@@ -245,14 +245,27 @@ rhoAcero = 7800;
                       ladoPerfilRectangular_3, tPerfilRectangular_3,...
                       rhoAcero)
 
-exportaVTKHex50mm('estructura_hex', coordenadasGlobales, elementosGlobales, 50);
+vol3 = pesoTotal_3/rhoAcero;
+a3 = vol3/L3;
+
+
+
+%exportaVTKHex50mm('estructura_hex', coordenadasGlobales, elementosGlobales, 50);
 
 LlargueroPuerta = 6;
 Lpuerta = 2*1.5;
-Ltrailer = (6000 + 2*3100 + 3100 + 3200 + 1000 + 100 + 100) / 1000;
-Lcinta = (3 * (2*1000 + 1000) + 2 * 6000 ) / 1000;
-Lporticos = ((2 * 2000 + 3 * 2000 + 2*2700 ) + (2*1800 + 6000 + 2*3100 + 2*1500 + 750) )/ 1000
-Lfinal = L3 + LlargueroPuerta + Lpuerta + Ltrailer + Lcinta
+pPuerta = ((LlargueroPuerta + Lpuerta) * a3) * rhoAcero;
 
+Ltrailer = (6000 + 2*3100 + 3100 + 3200 + 1000 + 100 + 100) / 1000;
+pTrailer = (Ltrailer * a3) * rhoAcero;
+
+Lcinta = (3 * (2*1000 + 1000) + 2 * 6000 ) / 1000;
+pCinta = (Lcinta * a3) * rhoAcero;
+
+Lporticos = ((2 * 2000 + 3 * 2000 + 2*2700 ) + (2*1800 + 6000 + 2*3100 + 2*1500 + 750) )/ 1000
+pPortico = Lporticos * a3 * rhoAcero;
+
+Lfinal = L3 + LlargueroPuerta + Lpuerta + Ltrailer + Lcinta
+pFinal = (Lfinal * a3) *rhoAcero
 
 endswitch %cierro --> switch caso
